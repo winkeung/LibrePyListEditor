@@ -898,44 +898,69 @@ def fix_indent(rows):
         raise Exception('1st line is a blank line.')
 
     top_ln_indent_lvl = c
+    c += 1
+    if i == "{" or i == "(" or i == "[":
+        bracket_lvl = 1
+    else:
+        bracket_lvl = 0
 
     rows = list(rows)
 
-    bracket_lvl  = 0
-    for r in range(len(rows)):
-        for c in range(len(rows[r])):
-        # while c < len(rows[r]):
-            i = rows[r][c]
-            if type(i) == str or type(i) == unicode:
-                i = i.strip()
+    # print "row 1", bracket_lvl
 
-                if i != '':
-                    break
-            else:
-                break
-
-        if i == '': # it is a blank row
-            # print ("blank row", c)
-            continue
-
-        # 1st non blank cell found, do indentation
-        if i == "}" or i == ")" or i == "]":
-            rows[r] = ('',) * (bracket_lvl - 1 + top_ln_indent_lvl) + rows[r][c:]
-        else:
-            rows[r] = ('',) * (bracket_lvl + top_ln_indent_lvl) + rows[r][c:]
-
-        # print bracket_lvl
-
-        # continue scanning the rest of row to track bracket level.
-        for c in range(len(rows[r])):
+    r = 0
+    # for r in range(len(rows)):
+    # while r < len(rows):
+    while True:
+        # track bracket level.
+        # for c in range(len(rows[r])):
+        while c < len(rows[r]):
             i = rows[r][c]
             if type(i) == str or type(i) == unicode:
                 i = i.strip()
 
                 if i == '[' or i == '(' or i == '{':
                     bracket_lvl = bracket_lvl + 1
+                    # print " [", bracket_lvl
                 elif i == ']' or i == ')' or i == '}':
                     bracket_lvl = bracket_lvl - 1
+                    # print " ]", bracket_lvl
+            c += 1
+        c = 0
+        r += 1
+        if r == len(rows):
+            break
+
+        # find 1st non blank cell and do indentation
+        found = False
+        # for c in range(len(rows[r])):
+        while c < len(rows[r]):
+            i = rows[r][c]
+            if type(i) == str or type(i) == unicode:
+                i = i.strip()
+                if i != '':
+                    found = True
+                    break
+            else:
+                found = True
+                break
+
+            c += 1
+
+        if not found: # it is a blank row
+            # print ("blank row", c)
+            continue
+
+        # 1st non blank cell found, do indentation
+        if i == "}" or i == ")" or i == "]":
+            # print "r=", r, " )", bracket_lvl
+            rows[r] = ('',) * (bracket_lvl - 1 + top_ln_indent_lvl) + rows[r][c:]
+            c = (bracket_lvl - 1 + top_ln_indent_lvl)
+        else:
+            # print "r=", r, bracket_lvl
+            rows[r] = ('',) * (bracket_lvl + top_ln_indent_lvl) + rows[r][c:]
+            c = (bracket_lvl + top_ln_indent_lvl)
+        # print bracket_lvl
 
     return tuple(rows)
 
@@ -1343,12 +1368,15 @@ MAX_COL = 1024
 
 def toggle_tree():
     rows, sr, c, r = get_sub_tree()
-    print_cells(rows)
+    # print_cells(rows)
     rows_len = len(rows)
     rows, c, r = phy_to_logical_line(rows, c, r - sr)
     rows = toggle(rows, c)
+
     # print_cells(rows)
     rows = fix_indent(rows)
+    # print_cells(rows)
+
     rows = logical_to_phy_line(rows, MAX_COL)
     # print_cells(rows)
 
@@ -1432,5 +1460,5 @@ b=[
 [1,2,3,4]
 ]
 
-# if __name__ == "__main__":
-#     unindent()
+if __name__ == "__main__":
+    toggle_tree()
