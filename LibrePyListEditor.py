@@ -323,15 +323,46 @@ def writeRange(*arg):
     
     # print(data_tup)
 
-def paste_to_calc(rows):
+def rows_to_sheet(rows):
+    rows = rectanglize(rows)
     doc = desktop.getCurrentComponent()
     sheet = doc.CurrentController.getActiveSheet()
     oRange = sheet.getCellRangeByPosition(0, 0, len(rows[0])-1, len(rows)-1)
-    tt = []
-    for r in rows:
-        tt.append(tuple(r))
-    tt = tuple(tt)
-    oRange.setDataArray(tt)
+    # tt = []
+    # for r in rows:
+    #     tt.append(tuple(r))
+    # tt = tuple(tt)
+    oRange.setDataArray(rows)
+
+def sheet_to_rows():
+    doc = desktop.getCurrentComponent()
+    sheet = doc.CurrentController.getActiveSheet()
+
+    c = sheet.createCursor()
+    c.gotoEndOfUsedArea(False)
+    lcol = c.RangeAddress.EndColumn
+    lrow = c.RangeAddress.EndRow
+
+    # get real range to extract data
+    oRange = sheet.getCellRangeByPosition(0, 0, lcol, lrow)
+
+    # Extract cell contents as DataArray
+    global data_tup
+    data_tup = oRange.getDataArray()
+
+    return data_tup
+
+def clear_sheet():
+    doc = desktop.getCurrentComponent()
+    sheet = doc.CurrentController.getActiveSheet()
+
+    c = sheet.createCursor()
+    c.gotoEndOfUsedArea(False)
+    lcol = c.RangeAddress.EndColumn
+    lrow = c.RangeAddress.EndRow
+
+    oRange = sheet.getCellRangeByPosition(0, 0, lcol, lrow)
+    oRange.clearContents(0x1ff)
 
 def write_range(rows, fcol, frow):
     doc = desktop.getCurrentComponent()
@@ -442,12 +473,26 @@ def write_obj(obj, rows, cur_col, cur_row):
     
     return cur_col, cur_row    
 
-def    repr_array_fmt(var_name):
-    exec("var=" + var_name)
+def var_to_rows(var, var_name):
+    # exec("var=" + var_name)
     rows=[[var_name + "="]]
     write_obj(var, rows, 1, 0)
-    fix_indent(rows)
+    rows = list(rows)
+    for r in range(len(rows)):
+        rows[r] = tuple(rows[r])
+    rows = tuple(rows)
+    rows = fix_indent(rows)
     return rows
+
+def var_to_sheet(var, var_name):
+    rows_to_sheet(var_to_rows(var, var_name))
+
+def sheet_to_var():
+    rows = sheet_to_rows()
+    rows = list(rows)
+    rows[0] = (("x="),) + rows[0][1:]
+    exec(rows_to_str(rows))
+    return x
 
 def print_cells(rows):
     max_row_len = 0
@@ -583,7 +628,7 @@ def get_statement():
                 bracket_lvl = bracket_lvl - 1
                 # print("]")
                 if bracket_lvl == 0:
-                    return rows, var_assign_row, fcol, frow
+                    return tuple(rows), var_assign_row, fcol, frow
 
     # print bracket_lvl,c, rows_idx
     # return rows, var_assign_row, fcol, frow
@@ -610,7 +655,7 @@ def get_statement():
     if not found:
         raise Exception('closing bracket not found')
 
-    return rows, var_assign_row, fcol, frow
+    return tuple(rows), var_assign_row, fcol, frow
 
 phy = ((1,2,3,'\\'),(),(4,5,6,),(7,8,9,'\\'),(10,11,12),(13,14,15,'\\'))
 log = ((1,2,3,4,5,6,7,8,9,10),)
@@ -716,7 +761,14 @@ def phy_to_logical_line(rows, col, row):
 
     return out_rows, out_col, out_row
 
-def get_sub_tree():
+def get_parent_list_rows():
+    """Get the parent list of the element at selection's top-left cell's left edge slice at.
+
+    e.g.  | ( |[a | b]| c | d | ) |  the square represent selection, it slice between cell a and b.
+
+    return value: the rows that cover the list (include brackets)
+
+    """
     doc = desktop.getCurrentComponent()
     sheet = doc.CurrentController.getActiveSheet()
 
@@ -953,8 +1005,9 @@ def fix_indent(rows):
 
         # 1st non blank cell found, do indentation
         if i == "}" or i == ")" or i == "]":
-            # print "r=", r, " )", bracket_lvl
+            # print " )", "r=", r, "c=", c , "bl=", bracket_lvl, "tlil=", top_ln_indent_lvl, rows[r][c:]
             rows[r] = ('',) * (bracket_lvl - 1 + top_ln_indent_lvl) + rows[r][c:]
+            # print rows[r]
             c = (bracket_lvl - 1 + top_ln_indent_lvl)
         else:
             # print "r=", r, bracket_lvl
@@ -1367,7 +1420,7 @@ def toggle(rows, col):
 MAX_COL = 1024
 
 def toggle_tree():
-    rows, sr, c, r = get_sub_tree()
+    rows, sr, c, r = get_parent_list_rows()
     # print_cells(rows)
     rows_len = len(rows)
     rows, c, r = phy_to_logical_line(rows, c, r - sr)
@@ -1405,7 +1458,7 @@ def remove_last_comma(s):
             return s
 
 # (one bracket occupied one whole cell, when '[]' is not used for index operator)            
-def array_to_str(rows):
+def rows_to_str(rows):
     repr_str = ''
     bracket_lvl = 0
     for r in rows:
@@ -1449,7 +1502,9 @@ a={
     "k1":[1,3,(4,["a", 2, 3.0],5),6,7], 
     "k2":"abc", 
     "k3":3, 
-    "k4":2.0
+    "k4":2.0,
+    1234:1,
+    (1,2,3,4,):4,
 }    
 
 b=[
@@ -1459,6 +1514,7 @@ b=[
 [1,2,3,4],
 [1,2,3,4]
 ]
+c =[1,2,3]
 
 if __name__ == "__main__":
     toggle_tree()
