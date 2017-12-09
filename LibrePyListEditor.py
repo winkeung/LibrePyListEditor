@@ -484,14 +484,15 @@ def var_to_rows(var, var_name):
     rows = fix_indent(rows)
     return rows
 
-def var_to_sheet(var, var_name):
-    rows_to_sheet(var_to_rows(var, var_name))
+def var_to_sheet(var):
+    rows_to_sheet(var_to_rows(var, "x"))
 
 def sheet_to_var():
     rows = sheet_to_rows()
     rows = list(rows)
     rows[0] = (("x="),) + rows[0][1:]
     exec(rows_to_str(rows))
+    # print x
     return x
 
 def print_cells(rows):
