@@ -2,8 +2,10 @@
 Use Libre/Open Office Calc as Tree/Grid View for Browsing and Editing Python Nested List/Dict/Tuple Using UNO or COM 
 
 ## System requirements
-Linux: Libre Office or Open Office, Python 2.7 or 3.x, uno package
-Windows: Libre Office or Open Office,  Python 2.7 or 3.x, uno package or comtypes packeage
+### Linux: 
+Libre Office or Open Office, Python 2.7 or 3.x, uno package.
+### Windows: 
+Libre Office or Open Office,  Python 2.7 or 3.x, uno package or comtypes packeage.
 
 ## Purpose
 This project is created for using Libre/Open office Calc Spread Sheet program as a grid view / tree view control for displaying and editing list, dictionary or tuple variables from Python command prompt. It provides a GUI tool for people who need to deal with long and deeply nested lists interactively on an Python commnad prompt.
@@ -20,33 +22,42 @@ What this program do is to display list variable in a simplified and tokenized P
 ## A Simple Demo
 (paths given may be slightly different from your machine)
 1. Start Calc with special command line parameters to allow for control thru COM or UNO from Python interpreter.
-   - On Windows, 
-     - "C:\Program Files\LibreOffice 5\program\soffice.exe" "--calc" --accept="socket,host=localhost,port=2002;urp;"
-   - On Linux, 
-		soffice --calc --accept="socket,host=localhost,port=2002;urp;StarOffice.ServiceManager"
-2. Start Python Command Prompt:
-   - On Windows,
-     - using Office bundled Python:
-	   "C:\Program Files\LibreOffice 5\program\python.exe"
-	 - using other Python:
-	   C:\Program Files (x86)\Anaconda2\python.exe
-   - On Linux:
-      /usr/bin/python
-	  or
-      /usr/bin/python3
-3. On the Python command prompt, type
-   >>> import LibrePyListEditor as li
-   >>> li.a
-   {(1, 2, 3, 4): 4, 1234: 1, 'k3': 3, 'k2': 'abc', 'k1': [1, 3, (4, ['a', 2, 3.0], 5), 6, 7], 'k4': 2.0}
-   >>> li.var_to_sheet(li.a)           
-   
-   The current sheet of Calc will show the content of variable li.a, make some random changes to some of the values. remember to press enter after editting the cells to commit the change to the cells.
-   
-   >>> x = li.sheet_to_var()
-   >>> x
-   {(1, 2, 3, 4): 4, 'k1': [1, 3, (4, ['a', 2, 3.0], 5), 6, 7], 'k3': 3, 'k2':abc', 1234: 1, 'k4': 3.0}
-   >>>   
+	- On Windows, type this on command prompt:
+ 
+		<pre>"C:\Program Files\LibreOffice 5\program\soffice.exe" "--calc" --accept="socket,host=localhost,port=2002;urp;"
+</pre>
+	
+	- On Linux, type this on terminal:
 
+		<pre>soffice --calc --accept="socket,host=localhost,port=2002;urp;StarOffice.ServiceManager"
+</pre>
+
+2. Start Python Command Prompt:
+	- On Windows,
+		- using Office bundled Python, type:
+	<pre>"C:\Program Files\LibreOffice 5\program\python.exe"</pre>
+
+		- using other Python, type
+
+			<pre>C:\Program Files (x86)\Anaconda2\python.exe</pre>
+	- On Linux, type:
+	<pre>/usr/bin/python</pre>
+or
+<pre>/usr/bin/python3</code>
+
+3. On the Python command prompt, type
+<pre>
+>>> mport LibrePyListEditor as li
+>>> li.a
+{(1, 2, 3, 4): 4, 1234: 1, 'k3': 3, 'k2': 'abc', 'k1': [1, 3, (4, ['a', 2, 3.0], 5), 6, 7], 'k4': 2.0}
+>>> li.var_to_sheet(li.a)
+</pre>
+The current sheet of Calc will show the content of variable li.a. Now make some random changes to some of the values. Remember to press enter after editting the cells to commit the change to the cells.
+
+<pre>>>> x = li.sheet_to_var()
+>>> x
+{(1, 2, 3, 4): 4, 'k1': [1, 3, (4, ['a', 2, 3.0], 5), 6, 7], 'k3': 3, 'k2':abc', 1234: 1, 'k4': 3.0}
+>>></pre>
 ## References
 1. http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html
 2. https://stackoverflow.com/questions/10166064/python-win32com-and-2-dimensional-arrays
