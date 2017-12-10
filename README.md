@@ -1,4 +1,3 @@
-<pre>
 # LibrePyListEditor
 Use Libre/Open Office Calc as Tree/Grid View for Browsing and Editing Python Nested List/Dict/Tuple 
 Using UNO or COM 
@@ -32,6 +31,7 @@ installed (I used Anaconda Python installer which included this package). (Not n
 the bundled Python for your work.)
 
 ## A Simple Demo
+<pre>
 (paths given may be slightly different from your machine)
 1. Start Calc with special command line parameters to allow for control thru COM or UNO from Python 
 interpreter.
@@ -74,11 +74,14 @@ the values. Remember to press enter after editting the cells to commit the chang
 {(1, 2, 3, 4): 4, 'k1': [1, 3, (4, ['a', 2, 3.0], 5), 6, 7], 'k3': 3, 'k2':abc', 1234: 1, 'k4': 3.0}
 >>>
 
-To cycle between collapse all, expand one level and expand all:
+To cycle between collapse all, expand one level and expand all, select the open bracket of the list
+you want to apply the change to and then call the folllowing function:
 >>> li.toggle_tree()
 </pre>
-![Alt text](calc_collpase.png)
+![Alt text](calc_collapse.png)
+
 ![Alt text](calc_expand1lvl.png)
+
 ![Alt text](calc_expand_all.png)
 
 ## References
