@@ -1482,6 +1482,8 @@ def rows_to_str(rows):
                 
                 elif i[-1] == ":":
                     repr_str = repr_str + i
+                elif i == "\\":
+                    repr_str += i
                 else:
                     repr_str = repr_str + i
                     if 0 < bracket_lvl:
