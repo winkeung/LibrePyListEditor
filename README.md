@@ -77,8 +77,10 @@ the values. Remember to press enter after editting the cells to commit the chang
 To cycle between collapse all, expand one level and expand all:
 >>> li.toggle_tree()
 </pre>
-![Alt text](calc_collpase.png)
+![Alt text](calc_collapse.png)
+
 ![Alt text](calc_expand1lvl.png)
+
 ![Alt text](calc_expand_all.png)
 
 ## References
