@@ -65,7 +65,9 @@ interpreter.
 
 The current sheet of Calc will show the content of variable li.a. Now make some random changes to some of
 the values. Remember to press enter after editting the cells to commit the change to the cells.
+</pre>
 ![Alt text](calc.png)
+<pre>
 
 >>> x = li.sheet_to_var()
 >>> x
