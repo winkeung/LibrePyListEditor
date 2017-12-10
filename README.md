@@ -74,7 +74,8 @@ the values. Remember to press enter after editting the cells to commit the chang
 {(1, 2, 3, 4): 4, 'k1': [1, 3, (4, ['a', 2, 3.0], 5), 6, 7], 'k3': 3, 'k2':abc', 1234: 1, 'k4': 3.0}
 >>>
 
-To cycle between collapse all, expand one level and expand all:
+To cycle between collapse all, expand one level and expand all, select the open bracket of the list
+you want to apply the change to and then call the folllowing function:
 >>> li.toggle_tree()
 </pre>
 ![Alt text](calc_collapse.png)
