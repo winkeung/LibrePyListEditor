@@ -74,7 +74,13 @@ the values. Remember to press enter after editting the cells to commit the chang
 {(1, 2, 3, 4): 4, 'k1': [1, 3, (4, ['a', 2, 3.0], 5), 6, 7], 'k3': 3, 'k2':abc', 1234: 1, 'k4': 3.0}
 >>>
 
-## References
+To cycle between collapse all, expand one level and expand all:
+>>> li.toggle_tree()
 </pre>
+![Alt text](calc_collpase.png)
+![Alt text](calc_expand1lvl.png)
+![Alt text](calc_expand_all.png)
+
+## References
 1. http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html
 2. https://stackoverflow.com/questions/10166064/python-win32com-and-2-dimensional-arrays
