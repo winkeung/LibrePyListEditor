@@ -1,4 +1,3 @@
-<pre>
 # LibrePyListEditor
 Use Libre/Open Office Calc as Tree/Grid View for Browsing and Editing Python Nested List/Dict/Tuple 
 Using UNO or COM 
@@ -32,6 +31,7 @@ installed (I used Anaconda Python installer which included this package). (Not n
 the bundled Python for your work.)
 
 ## A Simple Demo
+<pre>
 (paths given may be slightly different from your machine)
 1. Start Calc with special command line parameters to allow for control thru COM or UNO from Python 
 interpreter.
