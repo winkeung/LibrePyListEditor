@@ -58,13 +58,14 @@ interpreter.
 
 3. On the Python command prompt, type
 
->>> mport LibrePyListEditor as li
+>>> import LibrePyListEditor as li
 >>> li.a
 {(1, 2, 3, 4): 4, 1234: 1, 'k3': 3, 'k2': 'abc', 'k1': [1, 3, (4, ['a', 2, 3.0], 5), 6, 7], 'k4': 2.0}
 >>> li.var_to_sheet(li.a)
 
 The current sheet of Calc will show the content of variable li.a. Now make some random changes to some of
 the values. Remember to press enter after editting the cells to commit the change to the cells.
+![Alt text](calc.png)
 
 >>> x = li.sheet_to_var()
 >>> x
