@@ -31,41 +31,40 @@ installed (I used Anaconda Python installer which included this package). (Not n
 the bundled Python for your work.)
 
 ## A Simple Demo
-<pre>
 (paths given may be slightly different from your machine)
 1. Start Calc with special command line parameters to allow for control thru COM or UNO from Python 
 interpreter.
-	- On Windows, type this on command prompt:
- 
-		"C:\Program Files\LibreOffice 5\program\soffice.exe" "--calc" --accept=\
-		"socket,host=localhost,port=2002;urp;"
+<pre>
+    - On Windows, type this on command prompt:
+        "C:\Program Files\LibreOffice 5\program\soffice.exe" "--calc" --accept="socket,host=localhost,port=2002;urp;"
 	
-	- On Linux, type this on terminal:
-
-		soffice --calc --accept="socket,host=localhost,port=2002;urp;StarOffice.ServiceManager"
-
-
+    - On Linux, type this on terminal:
+        soffice --calc --accept="socket,host=localhost,port=2002;urp;StarOffice.ServiceManager"
+</pre>
 2. Start Python Command Prompt:
-	- On Windows,
-		- using Office bundled Python, type:
-			"C:\Program Files\LibreOffice 5\program\python.exe"
-		- using other Python, type
-			C:\Program Files (x86)\Anaconda2\python.exe
-	- On Linux, type:
-		/usr/bin/python
-		or
-		/usr/bin/python3
-
+<pre>
+    - On Windows,
+        - using Office bundled Python, type:
+            "C:\Program Files\LibreOffice 5\program\python.exe"
+            
+        - using other Python, type
+            C:\Program Files (x86)\Anaconda2\python.exe
+            
+    - On Linux, type:
+        /usr/bin/python
+        or
+        /usr/bin/python3
+</pre>
 3. On the Python command prompt, type
-
+<pre>
 >>> import LibrePyListEditor as li
 >>> li.a
 {(1, 2, 3, 4): 4, 1234: 1, 'k3': 3, 'k2': 'abc', 'k1': [1, 3, (4, ['a', 2, 3.0], 5), 6, 7], 'k4': 2.0}
 >>> li.var_to_sheet(li.a)
-
+</pre>
 The current sheet of Calc will show the content of variable li.a. Now make some random changes to some of
 the values. Remember to press enter after editting the cells to commit the change to the cells.
-</pre>
+
 ![Alt text](calc.png)
 <pre>
 
@@ -73,9 +72,10 @@ the values. Remember to press enter after editting the cells to commit the chang
 >>> x
 {(1, 2, 3, 4): 4, 'k1': [1, 3, (4, ['a', 2, 3.0], 5), 6, 7], 'k3': 3, 'k2':abc', 1234: 1, 'k4': 3.0}
 >>>
-
+</pre>
 To cycle between collapse all, expand one level and expand all, select the open bracket of the list
 you want to apply the change to and then call the folllowing function:
+<pre>
 >>> li.toggle_tree()
 </pre>
 ![Alt text](calc_collapse.png)
