@@ -188,7 +188,24 @@ def get_struct():
     # dispatcher.executeDispatch(document, ".uno:Group", "", 0, tuple([struct]))
     # return None
 
-def select(*args):
+def set_selection_visible(isVisible):
+    model = desktop.getCurrentComponent()
+    document = model.getCurrentController()
+    dispatcher = smgr.createInstance( "com.sun.star.frame.DispatchHelper")
+
+    struct = get_struct()
+
+    struct.Name = 'RowOrCol'
+    struct.Value = 'R'
+
+    if isVisible:
+        cmd_str = ".uno:ShowRow"
+    else:
+        cmd_str = ".uno:HideRow"
+
+    dispatcher.executeDispatch(document, cmd_str, "", 0, tuple([struct]))
+
+def select(scol, srow, lcol, lrow):
     #'dim oSheet, oRange, oCell, oController
     model = desktop.getCurrentComponent()
     oController = model.getCurrentController()
@@ -196,7 +213,7 @@ def select(*args):
     #oSheet = model.Sheets.getByIndex(0)  # access the active sheet
     oSheet = model.CurrentController.ActiveSheet
     #oRange = oSheet.getCellRangeByname("B2:D3")
-    oRange = oSheet.getCellRangeByPosition(0, 0, 1, 1)
+    oRange = oSheet.getCellRangeByPosition(scol, srow, lcol, lrow)
     oController.select(oRange)
 
 def createButton(*args):
@@ -1418,7 +1435,7 @@ def toggle(rows, col):
     # fix_indent(rows)
     return rows
 
-MAX_COL = 1024
+MAX_COL = 20
 
 def toggle_tree():
     rows, sr, c, r = get_parent_list_rows()
@@ -1447,7 +1464,66 @@ def toggle_tree():
 
     write_range(rectanglize(rows), 0, sr)
 
+    # Hide line with continuation char except the 1st line of the logical line
+    start_to_hide_at_row = 0
+    total_rows_to_hide = 0
+    for r in range(len(rows)):
+        try:
+            if rows[r][-1] == "\\":
+                if total_rows_to_hide == 0:
+                    start_to_hide_at_row = r
+                total_rows_to_hide += 1
+            elif 0 < total_rows_to_hide:
+                set_rows_visible(sr + start_to_hide_at_row + 1, total_rows_to_hide - 1, False)
+                total_rows_to_hide = 0
+        except: # blank row
+            set_rows_visible(sr + start_to_hide_at_row + 1, total_rows_to_hide - 1, False)
+            total_rows_to_hide = 0
+
     # return rows
+
+def set_rows_visible(start_row, no_of_row, isVisible):
+    doc = desktop.getCurrentComponent()
+    sheet = doc.CurrentController.getActiveSheet()
+
+    # Col = sheet.Columns[1]
+    Rows = sheet.Rows
+    for r in range(start_row, start_row + no_of_row):
+        try:
+            Rows[r].IsVisible = isVisible
+            # print("IsVisible")
+        except:
+            # backup current selection
+            oSelection = doc.getCurrentSelection()
+            oArea = oSelection.getRangeAddress()
+            frow = oArea.StartRow
+            lrow = oArea.EndRow
+            fcol = oArea.StartColumn
+            lcol = oArea.EndColumn
+
+            select(0,start_row,0, start_row + no_of_row - 1)
+            set_selection_visible(isVisible)
+            # print("set_selection_visiable")
+
+            # restore previous selection
+            select(fcol, frow, lcol, lrow)
+            break
+    # sheet.Rows.hideByIndex(i,1)
+    # Row.IsVisible = False
+
+#    sheet.Rows.insertByIndex(1, 1)
+
+def hide():
+    doc = desktop.getCurrentComponent()
+    sheet = doc.CurrentController.getActiveSheet()
+
+    # Col = sheet.Columns[1]
+    Row = sheet.Rows[1]
+    # sheet.Rows.hideByIndex(i,1)
+    Row.IsVisible = False
+
+#    sheet.Rows.insertByIndex(1, 1)
+
 
 def remove_last_comma(s):
     for i in range(len(s)-1, -1, -1):
@@ -1500,7 +1576,14 @@ def rows_to_str(rows):
 
 def hello(*args):
     print("hello, world!")
-    
+
+def excel():
+    import win32com.client
+    o = win32com.client.Dispatch("Excel.Application")
+    o.Visible = 1
+    o.Workbooks.Add()
+    o.Cells(1,1).Value = "Hello"
+
 a={
     "k1":[1,3,(4,["a", 2, 3.0],5),6,7], 
     "k2":"abc", 
