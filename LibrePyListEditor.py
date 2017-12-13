@@ -1501,7 +1501,7 @@ def set_rows_visible(start_row, no_of_row, isVisible):
             fcol = oArea.StartColumn
             lcol = oArea.EndColumn
 
-            select(0,start_row,0, start_row + no_of_row - 1)
+            select(fcol, start_row, fcol, start_row + no_of_row - 1)
             set_selection_visible(isVisible)
             # print("set_selection_visiable")
 
