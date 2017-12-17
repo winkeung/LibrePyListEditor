@@ -278,7 +278,7 @@ def readRange(*arg):
 
     if lcol == 1023:
         lcol = c.RangeAddress.EndColumn
-    if     lrow == 1048575:
+    if lrow == 1048575:
         lrow = c.RangeAddress.EndRow
 
     # print(frow, lrow, fcol, lcol)
@@ -1513,16 +1513,34 @@ def set_rows_visible(start_row, no_of_row, isVisible):
 
 #    sheet.Rows.insertByIndex(1, 1)
 
-def hide():
+def hide(r):
     doc = desktop.getCurrentComponent()
     sheet = doc.CurrentController.getActiveSheet()
 
     # Col = sheet.Columns[1]
-    Row = sheet.Rows[1]
+    Row = sheet.Rows[r]
     # sheet.Rows.hideByIndex(i,1)
     Row.IsVisible = False
 
 #    sheet.Rows.insertByIndex(1, 1)
+
+def unhide(r):
+    doc = desktop.getCurrentComponent()
+    sheet = doc.CurrentController.getActiveSheet()
+
+    # Col = sheet.Columns[1]
+    Row = sheet.Rows[r]
+    # sheet.Rows.hideByIndex(i,1)
+    Row.IsVisible = True
+
+def check_hide(r):
+    doc = desktop.getCurrentComponent()
+    sheet = doc.CurrentController.getActiveSheet()
+
+    # Col = sheet.Columns[1]
+    Row = sheet.Rows[r]
+    # sheet.Rows.hideByIndex(i,1)
+    return Row.IsVisible
 
 
 def remove_last_comma(s):
