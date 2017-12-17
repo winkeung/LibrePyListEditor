@@ -1,7 +1,7 @@
 # LibrePyListEditor
 Use Libre/Open Office Calc as Tree/Grid View for Browsing and Editing Python Nested List/Dict/Tuple 
 Using UNO or COM 
-(Scroll to the bottom for some screen shots)
+[(Scroll to the bottom for some screenshots)](#screenshots)
 
 ## System requirements
 ### Linux: 
@@ -79,11 +79,12 @@ you want to apply the change to and then call the folllowing function:
 <pre>
 >>> li.toggle_tree()
 </pre>
-![Alt text](calc_collapse.png)
+<a name="screenshots"></a>
+![Alt text](images/calc_collapse.png)
 
-![Alt text](calc_expand1lvl.png)
+![Alt text](images/calc_expand1lvl.png)
 
-![Alt text](calc_expand_all.png)
+![Alt text](images/calc_expand_all.png)
 
 ## References
 1. http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html
