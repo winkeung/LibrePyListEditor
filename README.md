@@ -65,8 +65,8 @@ interpreter.
 </pre>
 The current sheet of Calc will show the content of variable li.a. Now make some random changes to some of
 the values. Remember to press enter after editting the cells to commit the change to the cells.
-
-![Alt text](calc.png)
+<a name="screenshots"></a>
+![Alt text](images/calc.png)
 <pre>
 
 >>> x = li.sheet_to_var()
@@ -79,7 +79,6 @@ you want to apply the change to and then call the folllowing function:
 <pre>
 >>> li.toggle_tree()
 </pre>
-<a name="screenshots"></a>
 ![Alt text](images/calc_collapse.png)
 
 ![Alt text](images/calc_expand1lvl.png)
