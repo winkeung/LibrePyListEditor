@@ -1464,21 +1464,19 @@ def toggle_tree():
 
     write_range(rectanglize(rows), 0, sr)
 
-    # Hide line with continuation char except the 1st line of the logical line
-    start_to_hide_at_row = 0
-    total_rows_to_hide = 0
+    # Hide except the 1st and the last physical lines of a logical line which has >=3 physical lines
+    total_phy_lines = 0
     for r in range(len(rows)):
+        total_phy_lines += 1
         try:
             if rows[r][-1] == "\\":
-                if total_rows_to_hide == 0:
-                    start_to_hide_at_row = r
-                total_rows_to_hide += 1
-            elif 0 < total_rows_to_hide:
-                set_rows_visible(sr + start_to_hide_at_row + 1, total_rows_to_hide - 1, False)
-                total_rows_to_hide = 0
+                pass
+            else:
+                set_rows_visible(r - total_phy_lines + 2, total_phy_lines - 2, False)
+                total_phy_lines = 0
         except: # blank row
-            set_rows_visible(sr + start_to_hide_at_row + 1, total_rows_to_hide - 1, False)
-            total_rows_to_hide = 0
+            set_rows_visible(r - total_phy_lines + 2, total_phy_lines - 2, False)
+            total_phy_lines = 0
 
     # return rows
 
@@ -1519,8 +1517,11 @@ def hide(r):
 
     # Col = sheet.Columns[1]
     Row = sheet.Rows[r]
+    # Row = sheet.Rows.get(r)
     # sheet.Rows.hideByIndex(i,1)
     Row.IsVisible = False
+    #Row.setVisible(False)
+    #sheet.Rows.setIsVisible(1, False)
 
 #    sheet.Rows.insertByIndex(1, 1)
 
