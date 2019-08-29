@@ -1435,9 +1435,9 @@ def toggle(rows, col):
     # fix_indent(rows)
     return rows
 
-MAX_COL = 20
+MAX_COL = 1024 
 
-def toggle_tree():
+def toggle_tree(hideContinuedLines = False):
     rows, sr, c, r = get_parent_list_rows()
     # print_cells(rows)
     rows_len = len(rows)
@@ -1464,19 +1464,20 @@ def toggle_tree():
 
     write_range(rectanglize(rows), 0, sr)
 
-    # Hide except the 1st and the last physical lines of a logical line which has >=3 physical lines
-    total_phy_lines = 0
-    for r in range(len(rows)):
-        total_phy_lines += 1
-        try:
-            if rows[r][-1] == "\\":
-                pass
-            else:
-                set_rows_visible(r - total_phy_lines + 2, total_phy_lines - 2, False)
-                total_phy_lines = 0
-        except: # blank row
-            set_rows_visible(r - total_phy_lines + 2, total_phy_lines - 2, False)
-            total_phy_lines = 0
+    if hideContinuedLines:
+		# Hide except the 1st and the last physical lines of a logical line which has >=3 physical lines
+		total_phy_lines = 0
+		for r in range(len(rows)):
+			total_phy_lines += 1
+			try:
+				if rows[r][-1] == "\\":
+					pass
+				else:
+					set_rows_visible(r - total_phy_lines + 2, total_phy_lines - 2, False)
+					total_phy_lines = 0
+			except: # blank row
+				set_rows_visible(r - total_phy_lines + 2, total_phy_lines - 2, False)
+				total_phy_lines = 0
 
     # return rows
 
